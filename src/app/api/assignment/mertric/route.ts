@@ -1,19 +1,21 @@
-// pages/api/assignments/metrics.js
 import connectDB from '@/Database/ConnectDB';
-import {AssignmentMetrics} from '@/Models/AssignmentMetric.model';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { AssignmentMetrics } from '@/Models/AssignmentMetric.model';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    await connectDB();
+connectDB();
 
-    if (req.method === 'GET') {
-        try {
-            const metrics = await AssignmentMetrics.findOne(); // Assuming there's a single metrics document
-            res.status(200).json(metrics);
-        } catch (error) {
-            res.status(500).json({ message: 'Error fetching metrics', error });
+export async function GET() {
+    try {
+        const metrics = await AssignmentMetrics.findOne(); 
+        if (!metrics) {
+            return NextResponse.json({ message: 'Metrics not found' }, { status: 404 });
         }
-    } else {
-        res.status(405).json({ message: 'Method not allowed' });
+        return NextResponse.json(metrics, { status: 200 });
+    } catch (error) {
+        console.error('Error fetching metrics:', error);
+        return NextResponse.json(
+            { message: 'Error fetching metrics', error },
+            { status: 500 }
+        );
     }
 }

@@ -42,12 +42,10 @@ const connectDB = async (): Promise<Connection> => {
         const conn = await mongoose.connect(MONGODB_URI, options);
         console.log('MongoDB connected:', conn.connection.host);
 
-        // Set up connection error handler
         conn.connection.on('error', (err) => {
             console.error('MongoDB connection error:', err);
         });
 
-        // Set up disconnection handler
         conn.connection.on('disconnected', () => {
             console.log('MongoDB disconnected');
         });

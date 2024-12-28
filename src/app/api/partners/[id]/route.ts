@@ -1,28 +1,36 @@
-// pages/api/partners/[id].js
 import connectDB from '@/Database/ConnectDB';
-import {DeliveryPartner} from '@/Models/DeliveryPartern.model';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { DeliveryPartner } from '@/Models/DeliveryPartern.model';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    await connectDB();
+connectDB();
 
-    const { id } = req.query;
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+    const { id } = params;
 
-    if (req.method === 'PUT') {
-        try {
-            const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, req.body, { new: true });
-            res.status(200).json(updatedPartner);
-        } catch (error) {
-            res.status(500).json({ message: 'Error updating partner', error });
+    try {
+        const body = await req.json();
+        const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
+        if (!updatedPartner) {
+            return NextResponse.json({ message: 'Partner not found' }, { status: 404 });
         }
-    } else if (req.method === 'DELETE') {
-        try {
-            await DeliveryPartner.findByIdAndDelete(id);
-            res.status(204).end();
-        } catch (error) {
-            res.status(500).json({ message: 'Error deleting partner', error });
+        return NextResponse.json(updatedPartner, { status: 200 });
+    } catch (error) {
+        console.error('Error updating partner:', error);
+        return NextResponse.json({ message: 'Error updating partner', error }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+    const { id } = params;
+
+    try {
+        const deletedPartner = await DeliveryPartner.findByIdAndDelete(id);
+        if (!deletedPartner) {
+            return NextResponse.json({ message: 'Partner not found' }, { status: 404 });
         }
-    } else {
-        res.status(405).json({ message: 'Method not allowed' });
+        return NextResponse.json({ message: 'Partner deleted successfully' }, { status: 200 });
+    } catch (error) {
+        console.error('Error deleting partner:', error);
+        return NextResponse.json({ message: 'Error deleting partner', error }, { status: 500 });
     }
 }

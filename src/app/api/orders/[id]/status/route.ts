@@ -1,22 +1,27 @@
 // pages/api/orders/[id]/status.js
-import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '@/Database/ConnectDB';
 import {Order} from '@/Models/OrderPlace.model';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    await connectDB();
 
-    const { id } = req.query;
+connectDB();
 
-    if (req.method === 'PUT') {
-        try {
-            const { status } = req.body;
-            const updatedOrder = await Order.findByIdAndUpdate(id, { status }, { new: true });
-            res.status(200).json(updatedOrder);
-        } catch (error) {
-            res.status(500).json({ message: 'Error updating order status', error });
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
+    const { id } = params;
+
+    try {
+        const body = await req.json(); 
+        const { status } = body;
+
+        const updatedOrder = await Order.findByIdAndUpdate(id, { status }, { new: true });
+
+        if (!updatedOrder) {
+            return NextResponse.json({ message: 'Order not found' }, { status: 404 });
         }
-    } else {
-        res.status(405).json({ message: 'Method not allowed' });
+
+        return NextResponse.json(updatedOrder, { status: 200 });
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        return NextResponse.json({ message: 'Error updating order status', error }, { status: 500 });
     }
 }

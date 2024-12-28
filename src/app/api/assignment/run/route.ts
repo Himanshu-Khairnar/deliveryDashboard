@@ -1,21 +1,34 @@
-// pages/api/assignments/run.js
 import connectDB from '@/Database/ConnectDB';
-import {Assignment} from '@/Models/Assignment.model';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { Assignment } from '@/Models/Assignment.model';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    await connectDB();
+connectDB();
 
-    if (req.method === 'POST') {
-        try {
-            // Simulate an assignment algorithm
-            const { orderId, partnerId } = req.body;
-            const assignment = await Assignment.create({ orderId, partnerId, status: 'success', timestamp: new Date() });
-            res.status(201).json(assignment);
-        } catch (error) {
-            res.status(500).json({ message: 'Error running assignment', error });
+export async function POST(req: Request) {
+    try {
+        const body = await req.json(); 
+        const { orderId, partnerId } = body;
+
+        if (!orderId || !partnerId) {
+            return NextResponse.json(
+                { message: 'Order ID and Partner ID are required' },
+                { status: 400 }
+            );
         }
-    } else {
-        res.status(405).json({ message: 'Method not allowed' });
+
+        const assignment = await Assignment.create({
+            orderId,
+            partnerId,
+            status: 'success',
+            timestamp: new Date(),
+        });
+
+        return NextResponse.json(assignment, { status: 201 });
+    } catch (error) {
+        console.error('Error running assignment:', error);
+        return NextResponse.json(
+            { message: 'Error running assignment', error },
+            { status: 500 }
+        );
     }
 }

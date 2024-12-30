@@ -21,7 +21,11 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
         console.log(body)
+
         const partner = await DeliveryPartner.create(body);
+        if(!partner){
+            console.log("error in creating a partner")
+        }
         return NextResponse.json(partner, { status: 201 });
     } catch (error) {
         console.error('Error creating partner:', error);

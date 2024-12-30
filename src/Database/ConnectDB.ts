@@ -34,12 +34,8 @@ const connectDB = async (): Promise<Connection> => {
     }
 
     try {
-        const options: MongooseConnectOptions = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        };
-
-        const conn = await mongoose.connect(MONGODB_URI, options);
+    
+        const conn = await mongoose.connect(MONGODB_URI);
         console.log('MongoDB connected:', conn.connection.host);
 
         conn.connection.on('error', (err) => {

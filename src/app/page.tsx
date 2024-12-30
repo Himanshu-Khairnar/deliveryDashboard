@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
+import { getpartner } from '@/actions/partner.actions';
 
 // Demo data
 const metrics = {
@@ -81,6 +82,8 @@ const partnerStatus = {
 };
 
 export default function Dashboard() {
+
+  
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex justify-between items-center">

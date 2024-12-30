@@ -4,10 +4,11 @@ import { NextResponse } from 'next/server';
 
 connectDB();
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-    const { id } = params;
+export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+  
 
     try {
+        const { id } =await params;
         const body = await req.json();
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
         if (!updatedPartner) {

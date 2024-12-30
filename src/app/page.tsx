@@ -1,36 +1,8 @@
 import React from 'react';
-import {
-  Package,
-  Users,
-  TrendingUp,
-  Clock,
-  MapPin,
-  CheckCircle,
-  XCircle
-} from 'lucide-react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
-import { getpartner } from '@/actions/partner.actions';
 import DashboardBasic from '@/webComponents/DashboardBasic'
 import DashboardPartner from '@/webComponents/DashboardPartner';
 import Dashboardtable from '@/webComponents/Dashboardtable';
 import Link from 'next/link';
-
-
 
 export default function Dashboard() {
 

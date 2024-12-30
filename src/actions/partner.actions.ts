@@ -22,6 +22,19 @@ export const getpartner = async () => {
         console.log(error)
     }
 }
+export const getSpecficpartner = async (id:string) => {
+
+    try {
+        const res = await fetch(`${baseURL}/partners/${id}`,{
+            method:'GET'
+        })
+        console.log(res)
+        return res.json()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export const postPartner = async (formData :DeliveryPartner) => {
 

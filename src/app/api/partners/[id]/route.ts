@@ -5,10 +5,10 @@ import { NextResponse } from 'next/server';
 connectDB();
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  
+
 
     try {
-        const { id } =await params;
+        const { id } = await params;
         const body = await req.json();
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
         if (!updatedPartner) {
@@ -33,5 +33,19 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     } catch (error) {
         console.error('Error deleting partner:', error);
         return NextResponse.json({ message: 'Error deleting partner', error }, { status: 500 });
+    }
+}
+
+
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+    try {
+        const { id } = await params;
+
+        const data = await DeliveryPartner.findById(id)
+        if(!data)
+          return  NextResponse.json({message:"Error in getting specific partner"})
+        return NextResponse.json({data,message:"Successfully got partner"})
+    } catch (error) {
+        console.log(error)
     }
 }

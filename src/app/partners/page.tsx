@@ -54,7 +54,6 @@ export default function PartnersPage() {
         try {
             if (dialogActionType === "edit") {
                 if (selectedPartner?._id) {
-                    console.log('in update')
                     const updatedPartner = await updatePartner(selectedPartner._id, formData); 
                     setPartners(partners.map(p => (p._id === updatedPartner._id ? updatedPartner : p)));
                 }

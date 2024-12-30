@@ -3,7 +3,9 @@ import { stringify } from "querystring";
 const baseURL = 'http://localhost:3000/api/orders'
 
 type Order = {
-    _id: string; orderNumber: string; customer: {
+    _id?: string;
+     orderNumber: string;
+      customer: {
         name: string; phone: string; address: string;
     };
     area: string;
@@ -41,7 +43,6 @@ export const putData = async (payload: Order) => {
 
         // Parse JSON response
         const data = await res.json();
-        console.log('Order created successfully:', data);
         return data
     } catch (error) {
         console.log('Error:', error);

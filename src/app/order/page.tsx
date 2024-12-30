@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Package, Search, Filter } from 'lucide-react';
 import {
     Card,
@@ -14,7 +14,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-
+import OrderDashboard from '@/webComponents/OrderDashboard';
+import { getData } from '@/actions/order.actions';
+import OrderFilter from '@/webComponents/OrderFilter';
 type Order = {
     _id: string;
     orderNumber: string;
@@ -120,7 +122,6 @@ const demoOrders: Order[] = [
     }
 ];
 
-const demoAreas = ['All Areas', 'Downtown', 'Suburbs', 'Uptown'];
 
 const statusColors = {
     pending: 'bg-yellow-100 text-yellow-800',
@@ -130,11 +131,19 @@ const statusColors = {
 };
 
 export default function OrdersPage() {
-    const [orders] = useState<Order[]>(demoOrders);
+    const [orders, setOrders] = useState<Order[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState<string>('all');
     const [areaFilter, setAreaFilter] = useState<string>('all');
 
+    useEffect(() => {
+        const getOrder = async () => {
+            const data = await getData()
+            setOrders(data)
+        }
+        getOrder()
+    }, [location.reload])
+    
     const filteredOrders = orders.filter(order => {
         const matchesSearch = order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
             order.customer.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -149,129 +158,10 @@ export default function OrdersPage() {
                 <h1 className="text-3xl font-bold mb-4">Orders Management</h1>
 
                 {/* Stats Overview */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <Card>
-                        <CardContent className="pt-4">
-                            <div className="text-2xl font-bold">{orders.length}</div>
-                            <div className="text-sm text-gray-500">Total Orders</div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="pt-4">
-                            <div className="text-2xl font-bold">
-                                {orders.filter(o => o.status === 'pending').length}
-                            </div>
-                            <div className="text-sm text-gray-500">Pending Orders</div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="pt-4">
-                            <div className="text-2xl font-bold">
-                                {orders.filter(o => o.status === 'delivered').length}
-                            </div>
-                            <div className="text-sm text-gray-500">Delivered Orders</div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardContent className="pt-4">
-                            <div className="text-2xl font-bold">
-                                ${orders.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
-                            </div>
-                            <div className="text-sm text-gray-500">Total Revenue</div>
-                        </CardContent>
-                    </Card>
-                </div>
+                <OrderDashboard orders={orders} />
 
                 {/* Filters and Search Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder="Search orders..."
-                            className="pl-10 w-full h-10 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Filter by status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Status</SelectItem>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="assigned">Assigned</SelectItem>
-                            <SelectItem value="picked">Picked</SelectItem>
-                            <SelectItem value="delivered">Delivered</SelectItem>
-                        </SelectContent>
-                    </Select>
-
-                    <Select value={areaFilter} onValueChange={setAreaFilter}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Filter by area" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {demoAreas.map(area => (
-                                <SelectItem key={area} value={area.toLowerCase()}>{area}</SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                {/* Orders Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredOrders.map((order) => (
-                        <Card key={order._id} className="border rounded-lg shadow-sm">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">
-                                    #{order.orderNumber}
-                                </CardTitle>
-                                <span className={`px-2 py-1 rounded-full text-xs ${statusColors[order.status]}`}>
-                                    {order.status}
-                                </span>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-2">
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-500">Customer</p>
-                                        <p className="text-sm">{order.customer.name}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-500">Area</p>
-                                        <p className="text-sm">{order.area}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-500">Items</p>
-                                        <div className="text-sm">
-                                            {order.items.map((item, index) => (
-                                                <div key={index} className="flex justify-between">
-                                                    <span>{item.quantity}x {item.name}</span>
-                                                    <span>${(item.price * item.quantity).toFixed(2)}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-500">Scheduled For</p>
-                                        <p className="text-sm">{order.scheduledFor}</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-500">Total Amount</p>
-                                        <p className="text-sm font-semibold">${order.totalAmount.toFixed(2)}</p>
-                                    </div>
-                                    {order.assignedTo && (
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-500">Assigned To</p>
-                                            <p className="text-sm">{order.assignedTo}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
+              <OrderFilter orders={orders}/>
             </div>
         </div>
     );

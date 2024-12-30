@@ -34,7 +34,7 @@ export default function Dashboard() {
 
       {/* Recent Orders */}
       <Dashboardtable />
-      <Link href="/orders" className="inline-block mt-2 text-blue-600 hover:text-blue-800 font-medium transition-colors underline">
+      <Link href="/order" className="inline-block mt-2 text-blue-600 hover:text-blue-800 font-medium transition-colors underline">
         Check Recent Orders in Detail →
       </Link>
 

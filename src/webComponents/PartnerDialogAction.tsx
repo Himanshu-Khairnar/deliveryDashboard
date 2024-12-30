@@ -142,7 +142,7 @@ const DialogComponent: React.FC<DialogProps> = ({
                                     </Select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Areas (comma-separated)</label>
+                                    <label className="block text-sm font-medium text-gray-700">Areas ('Downtown', 'Suburbs', 'Uptown')</label>
                                     <Input
                                         name="areas"
                                         placeholder="Areas (comma-separated)"

@@ -7,7 +7,7 @@ connectDB();
 export async function POST(req: Request) {
     try {
         const body = await req.json(); 
-        const { orderId, partnerId } = body;
+        const { orderId, partnerId,status ,reason} = body;
 
         if (!orderId || !partnerId) {
             return NextResponse.json(
@@ -19,15 +19,38 @@ export async function POST(req: Request) {
         const assignment = await Assignment.create({
             orderId,
             partnerId,
-            status: 'success',
+            status,
             timestamp: new Date(),
+            reason
         });
 
-        return NextResponse.json(assignment, { status: 201 });
+         NextResponse.json(assignment, { status: 201 });
     } catch (error) {
         console.error('Error running assignment:', error);
         return NextResponse.json(
             { message: 'Error running assignment', error },
+            { status: 500 }
+        );
+    }
+}
+
+
+export async function GET() {
+    try {
+        const res = await Assignment.find();
+
+        if (!res) {
+            return NextResponse.json(
+                { message: "Error while fetching assignments" },
+                { status: 500 }
+            );
+        }
+
+        return NextResponse.json(res, { status: 200 });
+    } catch (error) {
+        console.error('Error in GET /api/assignment/run:', error);
+        return NextResponse.json(
+            { message: "Internal server error", error: error },
             { status: 500 }
         );
     }

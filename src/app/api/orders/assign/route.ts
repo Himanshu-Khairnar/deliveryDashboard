@@ -13,13 +13,14 @@ export async function POST(req: Request) {
             area,
             items,
             scheduledFor,
-            totalAmount
+            totalAmount,
+            assignedTo // Add partnerNumber to the request body
         } = body;
 
         // Validation for required fields
-        if (!orderNumber || !customer || !area || !items || !scheduledFor || !totalAmount) {
+        if (!orderNumber || !customer || !area || !items || !scheduledFor || !totalAmount || !assignedTo) {
             return NextResponse.json(
-                { message: 'All fields are required' },
+                { message: 'All fields are required, including partnerNumber' },
                 { status: 400 }
             );
         }
@@ -32,59 +33,24 @@ export async function POST(req: Request) {
             );
         }
 
-        // Create the new order in the database
-        const newOrder = new Order({
+        // Create the new order in the database, including partnerNumber
+        const newOrder =await Order.create({
             orderNumber,
             customer,
             area,
             items,
             scheduledFor,
             totalAmount,
-            status: 'pending', // Initial status as pending
+            assignedTo, 
+            status: 'pending', 
         });
 
-        await newOrder.save();
 
         return NextResponse.json(newOrder, { status: 201 });
     } catch (error) {
         console.error('Error creating order:', error);
         return NextResponse.json(
             { message: 'Error creating order', error },
-            { status: 500 }
-        );
-    }
-}
-
-export async function PATCH(req: Request) {
-    try {
-        const body = await req.json();
-        const { orderId, partnerId } = body;
-
-        // Validate input
-        if (!orderId || !partnerId) {
-            return NextResponse.json(
-                { message: 'Order ID and Partner ID are required' },
-                { status: 400 }
-            );
-        }
-
-        const order = await Order.findById(orderId);
-        if (!order) {
-            return NextResponse.json(
-                { message: 'Order not found' },
-                { status: 404 }
-            );
-        }
-
-        order.assignedTo = partnerId;
-        order.status = 'assigned';
-        await order.save();
-
-        return NextResponse.json(order, { status: 200 });
-    } catch (error) {
-        console.error('Error assigning delivery partner:', error);
-        return NextResponse.json(
-            { message: 'Error assigning delivery partner', error },
             { status: 500 }
         );
     }

@@ -4,12 +4,13 @@ import { NextResponse } from 'next/server';
 
 connectDB();
 
-export async function PATCH(req: Request, context: { params: { id: string } }) {
+export async function PATCH(req: Request,res:Response, {params}: { params: { id: string } }) {
 
 
     try {
-        const { id } = await context.params;
+        const { id } = await params;
         const body = await req.json();
+        console.log(body)
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
         if (!updatedPartner) {
             return NextResponse.json({ message: 'Partner not found' }, { status: 404 });

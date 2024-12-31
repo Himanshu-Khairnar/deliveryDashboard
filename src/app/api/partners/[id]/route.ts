@@ -4,11 +4,11 @@ import { NextResponse } from 'next/server';
 
 connectDB();
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, context: { params: { id: string } }) {
 
 
     try {
-        const { id } = await params;
+        const { id } = await context.params;
         const body = await req.json();
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
         if (!updatedPartner) {

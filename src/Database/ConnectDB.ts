@@ -1,4 +1,4 @@
-import mongoose, { Connection, ConnectOptions } from 'mongoose';
+import mongoose, { Connection } from 'mongoose';
 
 if (!process.env.MONGODB_URI) {
     throw new Error('MONGODB_URI environment variable is not defined');

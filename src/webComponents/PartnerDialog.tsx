@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-interface FormData {
+interface FormDatas {
   name: string;
   email: string;
   phone: string;
@@ -19,15 +19,14 @@ interface FormData {
     end: string;
   };
 }
-
 interface DialogComponentProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (formData: FormData) => Promise<void>;
+  onSubmit: (formData: FormDatas) => Promise<void>;
 }
 
 const DialogComponent: React.FC<DialogComponentProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDatas>({
     name: "",
     email: "",
     phone: "",
@@ -55,7 +54,7 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ isOpen, onClose, onSu
 
   const handleSubmit = async () => {
     try {
-      await onSubmit(formData as FormData);
+      await onSubmit(formData);
       setFormData({
         name: "",
         email: "",

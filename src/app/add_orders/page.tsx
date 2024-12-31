@@ -16,7 +16,7 @@ type Partner = {
 
 
 const Page = () => {
-    const { register, handleSubmit, setValue } = useForm({
+    const { register, handleSubmit } = useForm({
         defaultValues: {
             orderNumber: '',
             customer: {

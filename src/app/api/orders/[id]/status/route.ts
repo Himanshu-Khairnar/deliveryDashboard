@@ -1,8 +1,6 @@
-// pages/api/orders/[id]/status.js
 import connectDB from '@/Database/ConnectDB';
-import {Order} from '@/Models/OrderPlace.model';
+import { Order } from '@/Models/OrderPlace.model';
 import { NextResponse } from 'next/server';
-
 
 connectDB();
 
@@ -10,16 +8,17 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     const { id } = params;
 
     try {
-        const body = await req.json(); 
+        const body = await req.json();
         const { newStatus } = body;
-        console.log(newStatus)
-        const updatedOrder = await Order.findByIdAndUpdate(id, { status:newStatus }, { new: true });
+        console.log(newStatus);
+
+        const updatedOrder = await Order.findByIdAndUpdate(id, { status: newStatus }, { new: true });
 
         if (!updatedOrder) {
             return NextResponse.json({ message: 'Order not found' }, { status: 404 });
         }
 
-        console.log(updatedOrder)
+        console.log(updatedOrder);
         return NextResponse.json(updatedOrder, { status: 200 });
     } catch (error) {
         console.error('Error updating order status:', error);

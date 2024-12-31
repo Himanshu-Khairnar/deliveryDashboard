@@ -6,8 +6,9 @@ import { Order } from '@/Models/OrderPlace.model';
 connectDB();
 
 // PUT API handler for updating order status
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-    const { id } = await params; // Get the `id` from the route params
+export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
+    const { id } = await context.params; 
+    console.log(context.params)
     try {
         const body = await req.json(); // Parse the request body
         const { newStatus } = body; // Extract newStatus from the request body

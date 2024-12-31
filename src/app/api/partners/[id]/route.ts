@@ -21,7 +21,7 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
     }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE( { params }: { params: { id: string } }) {
     const { id } = params;
 
     try {
@@ -37,7 +37,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 }
 
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET( { params }: { params: { id: string } }) {
     try {
         const { id } = await params;
 

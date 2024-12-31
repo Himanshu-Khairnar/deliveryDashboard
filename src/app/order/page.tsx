@@ -1,22 +1,10 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Package, Search, Filter } from 'lucide-react';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import OrderDashboard from '@/webComponents/OrderDashboard';
 import { getData } from '@/actions/order.actions';
 import OrderFilter from '@/webComponents/OrderFilter';
+import Link from 'next/link';
+
 type Order = {
     _id: string;
     orderNumber: string;
@@ -39,96 +27,8 @@ type Order = {
     updatedAt: Date;
 };
 
-// Demo data
-const demoOrders: Order[] = [
-    {
-        _id: '1',
-        orderNumber: 'ORD001',
-        customer: {
-            name: 'John Doe',
-            phone: '+1-555-0123',
-            address: '123 Main St, City',
-        },
-        area: 'Downtown',
-        items: [
-            { name: 'Pizza', quantity: 2, price: 15.99 },
-            { name: 'Soda', quantity: 2, price: 2.99 }
-        ],
-        status: 'pending',
-        scheduledFor: '14:30',
-        totalAmount: 37.96,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    },
-    {
-        _id: '2',
-        orderNumber: 'ORD002',
-        customer: {
-            name: 'Jane Smith',
-            phone: '+1-555-0124',
-            address: '456 Oak Ave, City',
-        },
-        area: 'Suburbs',
-        items: [
-            { name: 'Burger', quantity: 1, price: 12.99 },
-            { name: 'Fries', quantity: 1, price: 4.99 }
-        ],
-        status: 'assigned',
-        assignedTo: 'Driver A',
-        scheduledFor: '15:00',
-        totalAmount: 17.98,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    },
-    {
-        _id: '3',
-        orderNumber: 'ORD003',
-        customer: {
-            name: 'Alice Johnson',
-            phone: '+1-555-0125',
-            address: '789 Pine Rd, City',
-        },
-        area: 'Downtown',
-        items: [
-            { name: 'Salad', quantity: 2, price: 9.99 },
-            { name: 'Water', quantity: 2, price: 1.99 }
-        ],
-        status: 'delivered',
-        assignedTo: 'Driver B',
-        scheduledFor: '13:30',
-        totalAmount: 23.96,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    },
-    {
-        _id: '4',
-        orderNumber: 'ORD004',
-        customer: {
-            name: 'Bob Wilson',
-            phone: '+1-555-0126',
-            address: '321 Elm St, City',
-        },
-        area: 'Uptown',
-        items: [
-            { name: 'Pasta', quantity: 1, price: 14.99 },
-            { name: 'Garlic Bread', quantity: 1, price: 3.99 }
-        ],
-        status: 'picked',
-        assignedTo: 'Driver C',
-        scheduledFor: '16:00',
-        totalAmount: 18.98,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }
-];
-
-
-
 export default function OrdersPage() {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState<string>('all');
-    const [areaFilter, setAreaFilter] = useState<string>('all');
 
     useEffect(() => {
         const getOrder = async () => {
@@ -136,15 +36,7 @@ export default function OrdersPage() {
             setOrders(data)
         }
         getOrder()
-    }, [location.reload])
-    
-    const filteredOrders = orders.filter(order => {
-        const matchesSearch = order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            order.customer.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-        const matchesArea = areaFilter === 'all' || order.area === areaFilter;
-        return matchesSearch && matchesStatus && matchesArea;
-    });
+    }, [location.reload]);
 
     return (
         <div className="p-6 max-w-7xl mx-auto">
@@ -152,11 +44,22 @@ export default function OrdersPage() {
                 <h1 className="text-3xl font-bold mb-4">Orders Management</h1>
 
                 {/* Stats Overview */}
-                <OrderDashboard orders={orders} />
+                <div className="h-min-screen">
+                    <OrderDashboard orders={orders} />
+                </div>
 
-                {/* Filters and Search Section */}
-              <OrderFilter />
+                {/* Add Order Button */}
+                <Link href={'add_orders'} passHref>
+                    <p className="inline-block px-6 py-3 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-colors duration-200">
+                        Add Orders
+                    </p>
+                </Link>
+
+                <div className="mt-10">
+                    {/* Filters and Search Section */}
+                    <OrderFilter />
+                </div>
             </div>
         </div>
     );
-}   
+}

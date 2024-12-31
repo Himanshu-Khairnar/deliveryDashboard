@@ -47,61 +47,7 @@ const DashboardPartner = async () => {
 
     return (
         <div className="space-y-6">
-            {/* Overview Cards */}
-            <div className="grid gap-4 md:grid-cols-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Partners</CardTitle>
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{data.length}</div>
-                        <p className="text-xs text-muted-foreground">
-                            Registered delivery partners
-                        </p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Available</CardTitle>
-                        <UserCheck className="h-4 w-4 text-green-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-green-600">{available}</div>
-                        <p className="text-xs text-muted-foreground">
-                            Ready for orders
-                        </p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Busy</CardTitle>
-                        <Activity className="h-4 w-4 text-orange-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-orange-600">{busy}</div>
-                        <p className="text-xs text-muted-foreground">
-                            Currently on delivery
-                        </p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Offline</CardTitle>
-                        <UserMinus className="h-4 w-4 text-gray-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-gray-600">{offline}</div>
-                        <p className="text-xs text-muted-foreground">
-                            Currently inactive
-                        </p>
-                    </CardContent>
-                </Card>
-            </div>
-
+        
             <div className="grid gap-4 md:grid-cols-2">
                 {/* Partner Status Card */}
                 <Card>

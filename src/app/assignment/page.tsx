@@ -1,25 +1,6 @@
 'use client'
-import React, { useState } from 'react';
-import { Users, TrendingUp, AlertCircle, Clock } from 'lucide-react';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Progress } from "@/components/ui/progress";
+
 import AssignmentMetric from '@/webComponents/AssignmentMetric';
-import { getassignment } from '@/actions/assignment.actions';
 import AssignmentPartnerStatus from '@/webComponents/AssignmentPartnerStatus';
 import AssignmentTable from '@/webComponents/AssignmentTable';
 

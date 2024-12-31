@@ -87,8 +87,8 @@ const OrderFilter = () => {
             if (!orderToUpdate) {
                 throw new Error(`Order with ID ${orderId} not found`);
             }
-            
-            const updatedOrder = await updateData( newStatus,orderId );
+
+            const updatedOrder = await updateData(newStatus, orderId);
             console.log(updatedOrder)
             // Update local state with the new order data
             setOrdersState(prevOrders =>
@@ -124,7 +124,6 @@ const OrderFilter = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <input
                         type="text"
                         placeholder="Search orders..."
@@ -132,6 +131,7 @@ const OrderFilter = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+
                 </div>
 
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -194,7 +194,7 @@ const OrderFilter = () => {
                                         <p className="text-sm font-medium text-gray-500">Total Amount</p>
                                         <p className="text-sm font-semibold">${order.totalAmount.toFixed(2)}</p>
                                     </div>
-                                    <div>
+                                    <div className='mb-5'> 
                                         <p className="text-sm font-medium text-gray-500">Change Status</p>
                                         <div className="flex flex-wrap gap-2 mt-2">
                                             {Object.keys(statusColors).map(status => (
@@ -215,15 +215,23 @@ const OrderFilter = () => {
                                                     )}
                                                 </Button>
                                             ))}
+
+
                                         </div>
+                                    
+
                                     </div>
+                                    <Link href={`add_assignment/${order._id}/partner/${order.assignedTo}`} passHref >
+                                        <p className="inline-block px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 transition-colors duration-200">
+                                            Assignment →
+                                        </p>
+                                    </Link>
                                 </div>
                             </CardContent>
-                       
-                       <div>
-                        <Link href={`add_assignment/${order._id}/partner/${order.assignedTo}`}>
-                        Assignment </Link>
-                       </div>
+
+                            <div className='p-5 text-blue-500'>
+
+                            </div>
                         </Card>
                     ))}
                 </div>

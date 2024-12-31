@@ -7,11 +7,12 @@ import React, { useEffect, useState } from "react";
 interface DialogProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (formData: any) => void;
+    onSubmit: (formData: FormData) => void; // FormData type is already defined
     actionType: "edit" | "delete";
-    editData?: FormData
+    editData?: FormData;
 }
-type FormData= {
+
+type FormData = {
     name: string;
     email: string;
     phone: string;
@@ -23,6 +24,7 @@ type FormData= {
         end: string;
     };
 }
+
 const DialogComponent: React.FC<DialogProps> = ({
     isOpen,
     onClose,
@@ -30,19 +32,19 @@ const DialogComponent: React.FC<DialogProps> = ({
     actionType,
     editData,
 }) => {
-
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         name: "",
         email: "",
         phone: "",
-        status: "active" as "active" | "inactive",
+        status: "active",
         currentLoad: 0,
-        areas: [] as string[],
+        areas: [],
         shift: {
             start: "",
             end: ""
         }
     });
+
     useEffect(() => {
         if (editData) {
             setFormData({
@@ -85,10 +87,11 @@ const DialogComponent: React.FC<DialogProps> = ({
     };
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        onSubmit(formData as FormData);
+        e.preventDefault();
+        onSubmit(formData); // No need for any casting, formData is of type FormData now
         onClose();
     };
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
@@ -113,7 +116,7 @@ const DialogComponent: React.FC<DialogProps> = ({
                                     <Input
                                         name="email"
                                         placeholder="Email"
-                                        value={formData?.email}
+                                        value={formData.email}
                                         onChange={handleInputChange}
                                     />
                                 </div>
@@ -122,13 +125,13 @@ const DialogComponent: React.FC<DialogProps> = ({
                                     <Input
                                         name="phone"
                                         placeholder="Phone"
-                                        value={formData?.phone}
+                                        value={formData.phone}
                                         onChange={handleInputChange}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Status</label>
-                                    <Select value={formData?.status} onValueChange={handleStatusChange}>
+                                    <Select value={formData.status} onValueChange={handleStatusChange}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select status" />
                                         </SelectTrigger>
@@ -145,7 +148,7 @@ const DialogComponent: React.FC<DialogProps> = ({
                                     <Input
                                         name="areas"
                                         placeholder="Areas (comma-separated)"
-                                        value={formData.areas && formData.areas.join(", ")}
+                                        value={formData.areas.join(", ")}
                                         onChange={handleInputChange}
                                     />
                                 </div>
@@ -155,7 +158,7 @@ const DialogComponent: React.FC<DialogProps> = ({
                                         <Input
                                             type="time"
                                             name="shift.start"
-                                            value={formData?.shift.start}
+                                            value={formData.shift.start}
                                             onChange={handleInputChange}
                                         />
                                     </div>
@@ -164,7 +167,7 @@ const DialogComponent: React.FC<DialogProps> = ({
                                         <Input
                                             type="time"
                                             name="shift.end"
-                                            value={formData?.shift.end}
+                                            value={formData.shift.end}
                                             onChange={handleInputChange}
                                         />
                                     </div>
@@ -181,7 +184,7 @@ const DialogComponent: React.FC<DialogProps> = ({
                                 <Button variant="outline" onClick={onClose}>
                                     Cancel
                                 </Button>
-                                <Button variant="destructive" onClick={() => onSubmit(editData)}>
+                                <Button variant="destructive" onClick={() => editData && onSubmit(editData)}>
                                     Confirm
                                 </Button>
                             </div>

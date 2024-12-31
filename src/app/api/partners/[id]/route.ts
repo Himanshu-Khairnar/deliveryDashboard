@@ -4,11 +4,11 @@ import { NextResponse } from 'next/server';
 
 connectDB();
 
-export async function PATCH(req: Request,res:Response, {params}: { params: { id: string } }) {
+export async function PATCH(req: Request, res: Response, context: { params: { id: string } }    ) {
 
 
     try {
-        const { id } = await params;
+        const { id } = await context.params;
         const body = await req.json();
         console.log(body)
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
@@ -22,8 +22,8 @@ export async function PATCH(req: Request,res:Response, {params}: { params: { id:
     }
 }
 
-export async function DELETE( { params }: { params: { id: string } }) {
-    const { id } = params;
+export async function DELETE( context: { params: { id: string } }) {
+    const { id } = context.params;
 
     try {
         const deletedPartner = await DeliveryPartner.findByIdAndDelete(id);
@@ -38,9 +38,9 @@ export async function DELETE( { params }: { params: { id: string } }) {
 }
 
 
-export async function GET( { params }: { params: { id: string } }) {
+export async function GET( context: { params: { id: string } }) {
     try {
-        const { id } = await params;
+        const { id } = await context.params;
 
         const data = await DeliveryPartner.findById(id)
         if(!data)

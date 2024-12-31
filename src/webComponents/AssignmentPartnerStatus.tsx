@@ -19,23 +19,20 @@ type DeliveryPartner = {
 };
 
 const AssignmentPartnerStatus = () => {
-    const [partners, setpartners] = useState<DeliveryPartner[]>([]);
     const [partnerStatus, setPartnerStatus] = useState({
         available: 0,
         busy: 0,
         offline: 0,
     });
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const getData = async () => {
             try {
                 const data = await getpartner();
-                setpartners(data);
                 updatePartnerStatus(data);
             } catch (error) {
-                setError('Failed to fetch partner data.');
+                console.log(error)
             } finally {
                 setLoading(false);
             }
@@ -72,13 +69,7 @@ const AssignmentPartnerStatus = () => {
         );
     }
 
-    if (error) {
-        return (
-            <div className="text-center py-12">
-                <p className="text-red-600">{error}</p>
-            </div>
-        );
-    }
+  
 
     return (
         <div>

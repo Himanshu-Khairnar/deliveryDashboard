@@ -4,15 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Clock, Package, TrendingUp, Users } from "lucide-react";
 
-type AssignmentMetrics = {
-    totalAssigned: number;
-    successRate: number;
-    averageTime: number;
-    failureReasons: {
-        reason: string;
-        count: number;
-    };
-};
+
 
 export default async function DashboardBasic() {
     const partners = await getpartner();

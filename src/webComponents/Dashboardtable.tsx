@@ -1,5 +1,5 @@
 import { getData } from '@/actions/order.actions'
-import { getpartner, getSpecficpartner } from '@/actions/partner.actions'
+import { getpartner} from '@/actions/partner.actions'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { CheckCircle } from 'lucide-react'

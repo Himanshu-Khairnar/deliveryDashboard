@@ -36,7 +36,7 @@ export default function OrdersPage() {
             setOrders(data)
         }
         getOrder()
-    }, [location.reload]);
+    }, []);
 
     return (
         <div className="p-6 max-w-7xl mx-auto">

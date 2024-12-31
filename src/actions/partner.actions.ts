@@ -1,5 +1,4 @@
-import { get, METHODS } from "http"
-import { Model } from "mongoose";
+
 export type DeliveryPartner = {
     name: string;
     email: string;

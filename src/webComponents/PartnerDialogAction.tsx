@@ -2,8 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Edit } from "lucide-react";
-import { format } from "path";
 import React, { useEffect, useState } from "react";
 
 interface DialogProps {
@@ -11,20 +9,20 @@ interface DialogProps {
     onClose: () => void;
     onSubmit: (formData: any) => void;
     actionType: "edit" | "delete";
-    editData?: {
-        name: string;
-        email: string;
-        phone: string;
-        status: "active" | "inactive";
-        currentLoad: number;
-        areas: string[];
-        shift: {
-            start: string;
-            end: string;
-        };
+    editData?: FormData
+}
+type FormData= {
+    name: string;
+    email: string;
+    phone: string;
+    status: "active" | "inactive";
+    currentLoad: number;
+    areas: string[];
+    shift: {
+        start: string;
+        end: string;
     };
 }
-
 const DialogComponent: React.FC<DialogProps> = ({
     isOpen,
     onClose,
@@ -45,7 +43,7 @@ const DialogComponent: React.FC<DialogProps> = ({
             end: ""
         }
     });
-       useEffect(() => {
+    useEffect(() => {
         if (editData) {
             setFormData({
                 name: editData.name || "",
@@ -60,7 +58,7 @@ const DialogComponent: React.FC<DialogProps> = ({
                 }
             });
         }
-    }, [editData]); 
+    }, [editData]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -88,9 +86,8 @@ const DialogComponent: React.FC<DialogProps> = ({
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        onSubmit(formData); // Call the submit function passed as a prop
+        onSubmit(formData as FormData);
         onClose();
-         // Optionally close the dialog after submission
     };
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -142,7 +139,9 @@ const DialogComponent: React.FC<DialogProps> = ({
                                     </Select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Areas ('Downtown', 'Suburbs', 'Uptown')</label>
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Areas (&apos;Downtown&apos;, &apos;Suburbs&apos;, &apos;Uptown&apos;)
+                                    </label>
                                     <Input
                                         name="areas"
                                         placeholder="Areas (comma-separated)"

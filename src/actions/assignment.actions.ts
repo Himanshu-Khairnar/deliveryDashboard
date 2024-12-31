@@ -1,4 +1,3 @@
-import { AwardIcon } from "lucide-react"
 
 const baseURL = 'http://localhost:3000/api/assignment'
 

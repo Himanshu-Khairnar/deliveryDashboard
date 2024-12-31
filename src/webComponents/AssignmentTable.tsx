@@ -22,7 +22,7 @@ const AssignmentTable = () => {
 
         }
         getdata()
-    },[location.reload])
+    },[])
     return (
         <div>
             <Card>

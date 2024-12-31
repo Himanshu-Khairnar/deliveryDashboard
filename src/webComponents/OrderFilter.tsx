@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Search, Loader2 } from 'lucide-react';
+import {  Loader2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { getData, updateData } from '@/actions/order.actions';
 import Link from 'next/link';

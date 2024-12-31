@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { MapPin, Users, UserCheck, UserMinus, Activity } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { getpartner } from '@/actions/partner.actions';
 
 type DeliveryPartner = {

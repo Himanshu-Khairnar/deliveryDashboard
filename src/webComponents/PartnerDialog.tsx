@@ -103,7 +103,9 @@ const DialogComponent: React.FC<DialogComponentProps> = ({ isOpen, onClose, onSu
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Areas ('Downtown', 'Suburbs', 'Uptown')</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Areas (&apos;Downtown&apos;, &apos;Suburbs&apos;, &apos;Uptown&apos;)
+            </label>
             <Input
               name="areas"
               placeholder="Areas (comma-separated)"

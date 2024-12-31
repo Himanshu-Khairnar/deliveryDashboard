@@ -1,30 +1,47 @@
-import { NextRequest, NextResponse } from 'next/server'; // Import NextRequest and NextResponse
 import connectDB from '@/Database/ConnectDB';
 import { Order } from '@/Models/OrderPlace.model';
+import { NextRequest, NextResponse } from 'next/server';
 
-// Connect to the database
 connectDB();
 
-// PUT API handler for updating order status
-export async function PATCH(req: NextRequest, context: { params: { id: string } }) {
-    const { id } = await context.params; 
-    console.log(context.params)
+type Props = {
+    params: {
+        id: string
+    }
+}
+
+export async function PATCH(
+    request: NextRequest,
+    props: Props
+): Promise<NextResponse> {
+    const { id } = props.params;
+
     try {
-        const body = await req.json(); // Parse the request body
-        const { newStatus } = body; // Extract newStatus from the request body
+        const body = await request.json();
+        const { newStatus } = body;
+        console.log(newStatus);
 
-        // Find and update the order
-        const updatedOrder = await Order.findByIdAndUpdate(id, { status: newStatus }, { new: true });
+        const updatedOrder = await Order.findByIdAndUpdate(
+            id,
+            { status: newStatus },
+            { new: true }
+        );
 
-        // If the order is not found
         if (!updatedOrder) {
-            return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+            return NextResponse.json(
+                { message: 'Order not found' },
+                { status: 404 }
+            );
         }
 
-        // Return the updated order
+        console.log(updatedOrder);
         return NextResponse.json(updatedOrder, { status: 200 });
+
     } catch (error) {
         console.error('Error updating order status:', error);
-        return NextResponse.json({ message: 'Error updating order status', error }, { status: 500 });
+        return NextResponse.json(
+            { message: 'Error updating order status', error },
+            { status: 500 }
+        );
     }
 }

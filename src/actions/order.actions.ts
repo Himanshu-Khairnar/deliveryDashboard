@@ -49,11 +49,11 @@ export const putData = async (payload: Order) => {
     }
 }
 
-export const updateData = async (payload:Order,id:string) =>{
+export const updateData = async (newStatus: string,id:string) =>{
     try {
         const res= await fetch(`${baseURL}/${id}/status`,{
             method:'PATCH',
-            body: JSON.stringify(payload)
+            body: JSON.stringify({newStatus})
         })
         return  res.json()
     } catch (error) {

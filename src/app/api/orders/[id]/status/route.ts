@@ -11,14 +11,15 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     try {
         const body = await req.json(); 
-        const { status } = body;
-
-        const updatedOrder = await Order.findByIdAndUpdate(id, { status }, { new: true });
+        const { newStatus } = body;
+        console.log(newStatus)
+        const updatedOrder = await Order.findByIdAndUpdate(id, { status:newStatus }, { new: true });
 
         if (!updatedOrder) {
             return NextResponse.json({ message: 'Order not found' }, { status: 404 });
         }
 
+        console.log(updatedOrder)
         return NextResponse.json(updatedOrder, { status: 200 });
     } catch (error) {
         console.error('Error updating order status:', error);

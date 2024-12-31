@@ -50,9 +50,9 @@ export const getassignment=async()=>{
     }
 }
 
-export const postassignment = async(payload:Assignment)=>{
+export const postassignment = async(formData:  Assignment)=>{
     try {
-        const res = await fetch(`${baseURL}/run`,{method:"POST",body:JSON.stringify(payload)})
+        const res = await fetch(`${baseURL}/run`,{method:"POST",body:JSON.stringify(formData)})
         return res.json()
     } catch (error) {
         console.log(error)

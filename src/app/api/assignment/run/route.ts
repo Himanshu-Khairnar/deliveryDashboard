@@ -4,11 +4,13 @@ import { NextResponse } from 'next/server';
 
 connectDB();
 
+
 export async function POST(req: Request) {
     try {
-        const body = await req.json(); 
-        const { orderId, partnerId,status ,reason} = body;
+        const body = await req.json();
+        const { orderId, partnerId, status, reason } = body;
 
+        // Basic validation
         if (!orderId || !partnerId) {
             return NextResponse.json(
                 { message: 'Order ID and Partner ID are required' },
@@ -16,19 +18,29 @@ export async function POST(req: Request) {
             );
         }
 
+        // Validate status and reason
+        if (status === 'failed' && !reason) {
+            return NextResponse.json(
+                { message: 'Reason is required if status is "failed"' },
+                { status: 400 }
+            );
+        }
+
+        // Create assignment
         const assignment = await Assignment.create({
             orderId,
             partnerId,
             status,
             timestamp: new Date(),
-            reason
+            reason: status === 'failed' ? reason : null, // Ensure reason is null if not failed
         });
 
-         NextResponse.json(assignment, { status: 201 });
+        return NextResponse.json(assignment, { status: 201 });
     } catch (error) {
-        console.error('Error running assignment:', error);
+        console.error('Error creating assignment:', error);
+
         return NextResponse.json(
-            { message: 'Error running assignment', error },
+            { message: 'Internal Server Error', error: error },
             { status: 500 }
         );
     }

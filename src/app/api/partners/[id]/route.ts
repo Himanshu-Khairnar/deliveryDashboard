@@ -1,16 +1,19 @@
 import connectDB from '@/Database/ConnectDB';
 import { DeliveryPartner } from '@/Models/DeliveryPartern.model';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 connectDB();
 
-export async function PATCH(req: Request, res: Response, context: { params: { id: string } }    ) {
 
-
+export async function PATCH(
+    req: NextRequest,
+    { params }: { params: { id: string } }
+) {
     try {
-        const { id } = await context.params;
+        const { id } = params;
         const body = await req.json();
-        console.log(body)
+        console.log(body);
+
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
         if (!updatedPartner) {
             return NextResponse.json({ message: 'Partner not found' }, { status: 404 });

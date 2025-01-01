@@ -4,18 +4,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 connectDB();
 
-type Props = {
-    params:Promise<{
-        id:string
-    }>
-}
 export async function PATCH(
     req: NextRequest,
-    props:Props
+   {params}:{params:{id:string}}
 )    {
     try {
         const body = await req.json();
-        const { id } = await props.params
+        const { id } = await params
         console.log(body);
 
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });

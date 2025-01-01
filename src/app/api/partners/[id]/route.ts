@@ -4,14 +4,18 @@ import { NextRequest, NextResponse } from 'next/server';
 
 connectDB();
 
-
+type Props = {
+    params:Promise<{
+        id:string
+    }>
+}
 export async function PATCH(
     req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-): Promise<NextResponse>  {
+    props:Props
+)    {
     try {
         const body = await req.json();
-        const {id} = await params
+        const { id } = await props.params
         console.log(body);
 
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });
@@ -25,7 +29,7 @@ export async function PATCH(
     }
 }
 
-export async function DELETE( context: { params: { id: string } }) {
+export async function DELETE(context: { params: { id: string } }) {
     const { id } = context.params;
 
     try {
@@ -41,14 +45,14 @@ export async function DELETE( context: { params: { id: string } }) {
 }
 
 
-export async function GET( context: { params: { id: string } }) {
+export async function GET(context: { params: { id: string } }) {
     try {
         const { id } = await context.params;
 
         const data = await DeliveryPartner.findById(id)
-        if(!data)
-          return  NextResponse.json({message:"Error in getting specific partner"})
-        return NextResponse.json({data,message:"Successfully got partner"})
+        if (!data)
+            return NextResponse.json({ message: "Error in getting specific partner" })
+        return NextResponse.json({ data, message: "Successfully got partner" })
     } catch (error) {
         console.log(error)
     }

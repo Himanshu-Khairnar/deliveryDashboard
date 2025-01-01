@@ -3,21 +3,15 @@ import { DeliveryPartner } from '@/Models/DeliveryPartern.model';
 import { NextRequest, NextResponse } from 'next/server';
 
 connectDB();
-type Props = {
-    params: {
-        slug: string
-    }
-}
+
 
 export async function PATCH(
     req: NextRequest,
-    props: Props
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse>  {
     try {
         const body = await req.json();
-        const searchParams = req.nextUrl.searchParams
-        const id = searchParams.get('id')
-
+        const {id} = await params
         console.log(body);
 
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });

@@ -7,11 +7,13 @@ connectDB();
 
 export async function PATCH(
     req: NextRequest,
-    { params }: { params: { id: string } }
+      
 ) {
     try {
-        const { id } = params;
         const body = await req.json();
+        const searchParams = req.nextUrl.searchParams
+        const id = searchParams.get('id')
+
         console.log(body);
 
         const updatedPartner = await DeliveryPartner.findByIdAndUpdate(id, body, { new: true });

@@ -3,12 +3,16 @@ import { DeliveryPartner } from '@/Models/DeliveryPartern.model';
 import { NextRequest, NextResponse } from 'next/server';
 
 connectDB();
-
+type Props = {
+    params: {
+        slug: string
+    }
+}
 
 export async function PATCH(
     req: NextRequest,
-      
-) {
+    props: Props
+): Promise<NextResponse>  {
     try {
         const body = await req.json();
         const searchParams = req.nextUrl.searchParams
